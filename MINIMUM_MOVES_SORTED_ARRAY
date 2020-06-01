@@ -1,0 +1,106 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+string ltrim(const string &);
+string rtrim(const string &);
+
+int getMinimumMoves(vector<int> arr, int n)
+{
+  
+    pair<int, int> arrPos[n]; 
+    for (int i = 0; i < n; i++) 
+    { 
+        arrPos[i].first = arr[i]; 
+        arrPos[i].second = i; 
+    } 
+  
+
+    sort(arrPos, arrPos + n); 
+  
+
+    vector<bool> vis(n, false); 
+  
+    int ans = 0; 
+  
+
+    for (int i = 0; i < n; i++) 
+    { 
+
+        if (vis[i] || arrPos[i].second == i) 
+            continue; 
+  
+
+        int cycle_size = 0; 
+        int j = i; 
+        while (!vis[j]) 
+        { 
+            vis[j] = 1; 
+  
+
+            j = arrPos[j].second; 
+            cycle_size++; 
+        } 
+  
+
+        if (cycle_size > 0) 
+        { 
+            ans += (cycle_size - 1); 
+        } 
+    } 
+  
+
+    return ans; 
+} 
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+ 
+    string arr_count_temp;
+    getline(cin, arr_count_temp);
+ 
+    int arr_count = stoi(ltrim(rtrim(arr_count_temp)));
+ 
+    
+ 
+    vector<int> arr(arr_count);
+ 
+    for (int i = 0; i < arr_count; i++) {
+        string arr_temp;
+        getline(cin, arr_temp);
+        int arr_item = stoi(ltrim(rtrim(arr_temp)));
+ 
+        arr[i] = arr_item;
+    }
+ 
+    int result = getMinimumMoves(arr, arr_count);
+ 
+    cout << result << "\n";
+ 
+    fout.close();
+ 
+    return 0;
+}
+ 
+
+ 
+string ltrim(const string &str) {
+    string s(str);
+ 
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+ 
+    return s;
+}
+ 
+string rtrim(const string &str) {
+    string s(str);
+ 
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+ 
+    return s;
+}
